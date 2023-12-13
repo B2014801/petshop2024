@@ -1,0 +1,15 @@
+.modal-footer {
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: flex-end; /* Align content to the bottom */
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    button {
+        width: 100%;
+        border: 0;
+        background-color: rgb(148, 233, 193);
+    }
+}
+

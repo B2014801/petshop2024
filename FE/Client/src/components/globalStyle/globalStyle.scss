@@ -1,0 +1,64 @@
+@import 'normalize.css';
+:root{
+    --primary:  rgb(28, 156, 165);
+}
+
+.navbar,
+footer {
+    background-color: var(--primary);
+}
+
+a {
+    text-decoration: none !important;
+    color: #fff;
+}
+a:hover {
+    color: #fff;
+    cursor: pointer;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nav {
+    margin: 0px 10px;
+}
+// @media all and (min-width: 992px) {
+.navbar .nav-item:hover .dropdown-menu {
+    display: block;
+}
+// }
+.nav-link,
+.dropdown-item,
+.nav-link-collapse {
+    color: #fff !important;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+.dropdown-menu {
+    background-color: rgb(148, 233, 193);
+    padding: 0;
+}
+.dropdown-item:hover {
+    background-color: rgb(34, 101, 105) !important;
+}
+.dropdown-item {
+    padding: 8px;
+}
+.dropdown-item:focus {
+    background-color: rgb(156, 228, 231) !important;
+}
+
+footer a svg {
+    margin: 0 6px;
+}
+footer a {
+    color: #fff;
+    font-size: 20px;
+}
+footer {
+    padding: 20px 0;
+}
