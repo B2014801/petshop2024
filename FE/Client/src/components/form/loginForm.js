@@ -2,7 +2,16 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import classNames from 'classnames/bind';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Cookies from 'js-cookie';
+
+import style from './form.module.scss';
+import GoogleSignIn from '~/components/auth/OAuth2';
+
+const cx = classNames.bind(style);
 
 const loginValidate = yup.object().shape({
     email: yup.string().required('Vui lòng nhập email'),
@@ -14,10 +23,16 @@ function LoginForm({ sendUserData }) {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm({
         resolver: yupResolver(loginValidate),
     });
-    const onSubmit = (data) => sendUserData(data);
+    const onSubmit = (data) => {
+        if (savePassword) {
+            setCookie(data);
+        }
+        sendUserData(data);
+    };
 
     //yup register is already set two way binding
     // const [user, setUser] = useState({ email: '', password: '' });
@@ -29,66 +44,91 @@ function LoginForm({ sendUserData }) {
     //         [name]: value,
     //     }));
     // };
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [savePassword, setSavePassword] = useState(false);
+
+    useEffect(() => {
+        getCookie();
+    }, []);
+
+    function setCookie(user) {
+        if (Cookies.get('userclient')) {
+            Cookies.remove('userclient');
+        }
+        // Set a cookie to store the password
+        Cookies.set('userclient', JSON.stringify(user), { expires: 7 }); // 'passwordCookie' is the cookie name
+    }
+    function getCookie() {
+        if (Cookies.get('userclient')) {
+            let cookie = JSON.parse(Cookies.get('userclient'));
+            // this.user.email = cookie.email;
+            // this.user.password = cookie.password;
+            setValue('email', cookie.email);
+            setValue('password', cookie.password);
+        }
+    }
     return (
-        <div class="container w-50 border border-primary rounded my-3 p-0">
-            <h3 class="bg-success text-white p-2 text-organ text-center">Chào mừng bạn đến với shop thú cưng</h3>
+        <div className="container w-50 border border-primary rounded my-3 p-0">
+            <h3 className="bg-success text-white p-2 text-organ text-center">Chào mừng bạn đến với shop thú cưng</h3>
             {/* <Form @submit="submitLogin" :validation-schema="loginValidate"> */}
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div class="m-3">
+                <div className="m-3">
                     {/* <strong v-if="errorLoginEmailOrPassword" class="text-danger">
                         Email hoặc mật khẩu không hợp lệ
                     </strong> */}
-                    <div class="form-group font-weight-bold">
+                    <div className="form-group font-weight-bold">
                         <label for="email">
                             Email <strong class="text-danger">(*)</strong>{' '}
                         </label>
-                        <div>
+                        <div className="input-group border">
                             <input
                                 id="email"
                                 name="email"
                                 type="email"
-                                // value={user.email}
-                                class="form-control"
+                                className="form-control border-0"
                                 placeholder="Vui lòng nhập vào email của bạn"
-                                // onChange={handleInputChange}
                                 {...register('email')}
                             />
                         </div>
-                        <strong class="text-danger">{errors.email?.message}</strong>
+                        <strong className="text-danger">{errors.email?.message}</strong>
                     </div>
-                    <div class="form-group font-weight-bold">
+                    <div className="form-group font-weight-bold">
                         <label for="password" class="my-2">
                             Mật khẩu <strong class="text-danger">(*)</strong>
                         </label>
-                        <div class="input-group border">
+                        <div className="input-group border">
                             <input
                                 id="password"
                                 name="password"
-                                // :type="isShowPassword ? 'text' : 'password'"
-                                // value={user.password}
-                                class="form-control border-0"
+                                type={showPassword ? 'text' : 'password'}
+                                className="form-control border-0"
                                 placeholder="Nhập mật khẩu của bạn"
                                 // onChange={handleInputChange}
                                 {...register('password')}
                             />
-                            {/* <i @click="showPassword" class="fa-sharp fa-solid fa-eye border-0 bg-white px-2 my-auto"></i> */}
+                            <FontAwesomeIcon
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="border-0 bg-white px-2 my-auto"
+                                icon={faEye}
+                            />
                         </div>
-                        <strong class="text-danger">{errors.password?.message}</strong>
+                        <strong className="text-danger">{errors.password?.message}</strong>
                     </div>
-                    <div class="form-group form-check my-2">
-                        {/* <input
+                    <div className="form-group form-check my-2">
+                        <input
                             type="checkbox"
                             id="remember"
                             name="nho-mat-khau"
-                            class="form-check-input"
-                            // @click="isSavePassword = !isSavePassword"
+                            className="form-check-input"
+                            onClick={() => setSavePassword(!savePassword)}
                             // v-model="isSavePassword"
-                        /> */}
-                        <label for="remember" class="form-check-label">
+                        />
+                        <label for="remember" className="form-check-label">
                             Ghi nhớ tôi
                         </label>
                     </div>
-                    <div class="btn-login-register-container">
+                    <div className={cx('btn-login-register-container')}>
                         <button class="btn btn-info" type="submit">
                             Đăng nhập
                         </button>
@@ -96,10 +136,10 @@ function LoginForm({ sendUserData }) {
                             Tạo tài khoản
                         </Link>
                     </div>
-                    <div class="login-choice">
+                    <div className={cx('login-choice')}>
                         <span>Đăng nhập với</span>
                     </div>
-                    {/* <Oauth @submit:oauthdata="handleSubmitOauth" /> */}
+                    <GoogleSignIn />
                 </div>
             </form>
         </div>
