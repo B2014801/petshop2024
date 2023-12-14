@@ -2,7 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { faMessage, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
+// import React from 'react';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { decrement, increment } from '~/stores/auth.store';
+
 function Footer() {
+    // const count = useSelector((state) => state.counter.value);
+    // const dispatch = useDispatch();
     return (
         <footer>
             <p class="text-center text-white">© Copyright by student of ctu</p>
@@ -23,6 +29,17 @@ function Footer() {
                 <img :src="img.zalo" class="w-100" alt="" />
             </div>
         </Model> */}
+            {/* <div>
+                <div>
+                    <button aria-label="Increment value" onClick={() => dispatch(increment())}>
+                        Increment
+                    </button>
+                    <span>{count}</span>
+                    <button aria-label="Decrement value" onClick={() => dispatch(decrement())}>
+                        Decrement
+                    </button>
+                </div>
+            </div> */}
         </footer>
     );
 }
