@@ -136,12 +136,14 @@ function LoginForm({ sendUserData }) {
                             Tạo tài khoản
                         </Link>
                     </div>
-                    <div className={cx('login-choice')}>
-                        <span>Đăng nhập với</span>
-                    </div>
-                    <GoogleSignIn />
                 </div>
             </form>
+            <div className={cx('login-choice')}>
+                <span>Đăng nhập với</span>
+            </div>
+            <div className="mb-3">
+                <GoogleSignIn onSignIn={onSubmit} />
+            </div>
         </div>
     );
 }

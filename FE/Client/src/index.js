@@ -11,7 +11,6 @@ import GlobalStyles from '~/components/globalStyle';
 import store from '~/stores/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-console.log(process.env.REACT_APP_GG_ID);
 root.render(
     <React.StrictMode>
         <GlobalStyles>

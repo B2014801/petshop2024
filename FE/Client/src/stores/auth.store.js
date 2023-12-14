@@ -8,10 +8,10 @@ export const counterSlice = createSlice({
         isExpire: false,
     },
     reducers: {
-        loadAuthState() {
-            this.user = JSON.parse(localStorage.getItem('user'));
+        loadAuthState: (state) => {
+            state.user = JSON.parse(localStorage.getItem('user'));
         },
-        logout() {
+        logout: () => {
             this.user = null;
             localStorage.removeItem('user');
             // let CartStore = cartStore();
@@ -20,7 +20,7 @@ export const counterSlice = createSlice({
         login: (state, userdata) => {
             state.user = userdata.payload;
         },
-        register(user) {
+        register: (user) => {
             this.user = null;
             return AuthService.register(user);
         },
@@ -31,6 +31,6 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { login, setExpired } = counterSlice.actions;
+export const { login, setExpired, loadAuthState, logout } = counterSlice.actions;
 
 export default counterSlice.reducer;

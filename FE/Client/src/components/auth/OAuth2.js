@@ -1,30 +1,31 @@
 import { useGoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import classNames from 'classnames/bind';
+import axios from 'axios';
 
 import style from './Oauth2.module.scss';
 
 const cx = classNames.bind(style);
 
 const GoogleSignIn = ({ onSignIn }) => {
-    const responseGoogle = (response) => {
-        // Handle the Google sign-in response and extract necessary data
-        const { profileObj } = response;
-        const formData = {
-            email: profileObj.email,
-            name: profileObj.name,
-            img: profileObj.imageUrl,
-            OAuthtype: 'gg',
-        };
-
-        // Emit the OAuth data to the parent component
-        onSignIn(formData);
-    };
-
     const login = useGoogleLogin({
-        onSuccess: (credentialResponse) => {
-            const credentialResponseDecode = jwtDecode(credentialResponse.credential);
-            console.log(credentialResponseDecode);
+        onSuccess: async (response) => {
+            try {
+                const res = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: {
+                        Authorization: `Bearer ${response.access_token}`,
+                    },
+                });
+                const formData = {
+                    email: res.data.email,
+                    name: res.data.name,
+                    img: res.data.picture,
+                    OAuthtype: 'gg',
+                };
+                onSignIn(formData);
+            } catch (error) {
+                console.log(error);
+            }
         },
         onError: () => {
             console.log('Login Failed');

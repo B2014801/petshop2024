@@ -2,19 +2,24 @@ import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 import style from './header.module.scss';
 import img from '~/assets/imgs';
 import Category from './category';
 import productService from '~/services/product.service';
+import { loadAuthState } from '~/stores/auth.store';
 
 const cx = classNames.bind(style);
 function Header() {
-    // const getProduct = async () => {
-    //     let result = await productService.getAllProduct();
-    //     console.log(result);
-    // };
-    // getProduct();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(loadAuthState());
+    }, []);
+
+    let user = useSelector((store) => store.auth.user);
     return (
         <div>
             <nav className="navbar navbar-expand-lg p-1">
@@ -49,21 +54,24 @@ function Header() {
                             <FontAwesomeIcon icon={faCartShopping} className="mx-3" />
                             {/* </toprightamout> */}
                         </Link>
-
-                        <span>
-                            <Link to="/login">
-                                <FontAwesomeIcon icon={faUser} />
-                                <span> |</span>&nbsp;
-                            </Link>
-                            <Link to="/register">
-                                <FontAwesomeIcon icon={faUserPlus} />
-                            </Link>
-                        </span>
-                        {/* <span v-else>
-                            <Link to="/user/profile">
-                                <i className="fa-solid fa-user mr-3 ml-2"></i>
-                            </Link>
-                        </span> */}
+                        ,
+                        {user === null ? (
+                            <span>
+                                <Link to="/login">
+                                    <FontAwesomeIcon icon={faUser} />
+                                    <span> |</span>&nbsp;
+                                </Link>
+                                <Link to="/register">
+                                    <FontAwesomeIcon icon={faUserPlus} />
+                                </Link>
+                            </span>
+                        ) : (
+                            <span>
+                                <Link to="/user/profile">
+                                    <FontAwesomeIcon icon={faUser} />
+                                </Link>
+                            </span>
+                        )}
                     </div>
                 </div>
             </nav>

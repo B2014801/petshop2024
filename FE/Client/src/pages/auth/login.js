@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { LoginForm } from '~/components/form';
 import { login, setExpired } from '~/stores/auth.store';
@@ -6,7 +7,7 @@ import AuthService from '~/services/auth.service';
 
 function Login() {
     const dispatch = useDispatch();
-    const user = useSelector((data) => data.auth.user);
+    const navigate = useNavigate();
 
     const handleLogin = async (data) => {
         try {
@@ -20,7 +21,7 @@ function Login() {
                 localStorage.setItem('user', JSON.stringify(response));
                 dispatch(setExpired(false));
 
-                console.log(user);
+                navigate('/');
             }
             // console.log(result);
         } catch (error) {}
