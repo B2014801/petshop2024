@@ -8,7 +8,7 @@ const commonConfig = {
 
 export const createApiClient = (baseURL, withAuthToken = false) => {
     const api = axios.create({
-        baseURL: process.env.REACT_APP_PETSHOP_SERVER_BASE_URL + baseURL,
+        baseURL: !baseURL.startsWith('http') ? process.env.REACT_APP_PETSHOP_SERVER_BASE_URL + baseURL : baseURL,
     });
 
     //Add an interceptor to transform requests

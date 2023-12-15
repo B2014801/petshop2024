@@ -52,6 +52,16 @@ input::-webkit-inner-spin-button {
     background-color: rgb(156, 228, 231) !important;
 }
 
+.register-address-selection {
+    display: flex;
+    justify-content: center;
+    select {
+        margin: 4px 0;
+        width: 170px;
+        max-height: 150px;
+    }
+}
+
 footer a svg {
     margin: 0 6px;
 }
