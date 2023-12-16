@@ -20,6 +20,7 @@ root.render(
                 </GoogleOAuthProvider>
             </Provider>
         </GlobalStyles>
+        ,
     </React.StrictMode>,
 );
 

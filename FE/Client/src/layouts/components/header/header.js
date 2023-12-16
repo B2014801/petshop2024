@@ -3,19 +3,33 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import style from './header.module.scss';
 import img from '~/assets/imgs';
 import Category from './category';
 import productService from '~/services/product.service';
 import { loadAuthState } from '~/stores/auth.store';
+import categoryService from '~/services/category.service';
 
 const cx = classNames.bind(style);
 function Header() {
     const dispatch = useDispatch();
+    const [category, setCategory] = useState([]);
+
+    const getAllCategory = async () => {
+        try {
+            let category = await categoryService.getAll();
+            if (category.length !== 0) {
+                setCategory(category);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
+        getAllCategory();
         dispatch(loadAuthState());
     }, []);
 
@@ -32,7 +46,7 @@ function Header() {
                         <img src={img.logo} className="" alt="" width="130" height="70" />
                     </Link>
                     <div className="collapse navbar-collapse justify-content-between mr-3">
-                        <Category />
+                        <Category category={category} />
                         {/* 
                 <div className="header-search">
                     <Search

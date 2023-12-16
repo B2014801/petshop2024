@@ -1,11 +1,22 @@
 import { Link } from 'react-router-dom';
+import Proptypes from 'prop-types';
 
-function Category() {
+function Category({ category }) {
+    const removeDiacriticsAndReplaceSpaces = (inputString) => {
+        // Remove diacritics using a regular expression
+        const withoutDiacritics = inputString.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        // Replace spaces with hyphens
+        const modifiedString = withoutDiacritics.replace(/\s+/g, '-');
+
+        return modifiedString;
+    };
+
     return (
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
+        <ul className="navbar-nav">
+            <li className="nav-item dropdown">
                 <Link
-                    class="nav-link dropdown-toggle"
+                    className="nav-link dropdown-toggle"
                     href="index.php"
                     id="navbarDropdownMenuLink"
                     role="button"
@@ -15,51 +26,54 @@ function Category() {
                 >
                     Trang chủ
                 </Link>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <Link to="/about" class="dropdown-item">
+                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <Link to="/about" className="dropdown-item">
                         Giới thiệu
                     </Link>
-                    <Link to="/contact" class="dropdown-item">
+                    <Link to="/contact" className="dropdown-item">
                         Liên hệ
                     </Link>
                 </div>
             </li>
-            {/* <li v-for="(Category, index) in Categorys" class="nav-item dropdown">
-        <Link
-            class="nav-link dropdown-toggle"
-            href="index.php"
-            id="navbarDropdownMenuLink"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-            :to="{
-                name: 'brand',
-                params: {
-                    CategoryId: Category._id,
-                    CategoryName: removeDiacriticsAndReplaceSpaces(Category.name),
-                },
-            }"
-        >
-            {{ Category.name }}
-        </Link>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <Link
-                v-for="(Brand, index) in Category.brand"
-                :to="
-                    '/shop/' +
-                    removeDiacriticsAndReplaceSpaces(Category.name) +
-                    '/' +
-                    removeDiacriticsAndReplaceSpaces(Brand.name) +
-                    '/' +
-                    removeDiacriticsAndReplaceSpaces(Brand._id)
-                "
-                class="dropdown-item"
-                >{{ Brand.name }}</Link
-            >
-        </div>
-    </li> */}
+
+            {category?.map((Category, index) => (
+                <li key={index} className="nav-item dropdown">
+                    <Link
+                        className="nav-link dropdown-toggle"
+                        href="index.php"
+                        id="navbarDropdownMenuLink"
+                        role="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        to={`/shop/${removeDiacriticsAndReplaceSpaces(Category.name)}/${Category._id}`}
+                    >
+                        {Category.name}
+                    </Link>
+                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        {Category.brand.map((Brand, index) => (
+                            <Link
+                                key={index}
+                                to={
+                                    '/shop/' +
+                                    removeDiacriticsAndReplaceSpaces(Category.name) +
+                                    '/' +
+                                    removeDiacriticsAndReplaceSpaces(Brand.name) +
+                                    '/' +
+                                    removeDiacriticsAndReplaceSpaces(Brand._id)
+                                }
+                                className="dropdown-item"
+                            >
+                                {Brand.name}
+                            </Link>
+                        ))}
+                    </div>
+                </li>
+            ))}
         </ul>
     );
 }
+Category.propTypes = {
+    category: Proptypes.array.isRequired,
+};
 
 export default Category;
