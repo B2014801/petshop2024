@@ -7,3 +7,11 @@ export const removeDiacriticsAndReplaceSpaces = (inputString) => {
 
     return modifiedString;
 };
+export const formatNumberWithDot = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ₫'; //1000 to 1.000
+};
+export const getProductAfterDisCount = (product) => {
+    const PriceInt = product.price.replace(/\./g, '');
+    const AfterDiscount = PriceInt - (PriceInt * product.discount) / 100;
+    return formatNumberWithDot(AfterDiscount);
+};

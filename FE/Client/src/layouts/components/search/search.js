@@ -14,23 +14,29 @@ const cx = classNames.bind(style);
 
 function Search() {
     const [showResult, setShowResult] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(null);
     const [searchValue, setSearchValue] = useState('');
     const [searchResult, setSearchResult] = useState([]);
 
-    const dedouncedValue = useDebounce(searchValue, 500);
+    const debouncedValue = useDebounce(searchValue, 500);
 
     useEffect(() => {
+        if (debouncedValue.trim() === '') {
+            setSearchResult([]);
+            return;
+        }
         let getProduct = async () => {
-            setLoading(true);
+            try {
+                setLoading(true);
 
-            let result = await productService.findByName(dedouncedValue);
-            console.log(result);
-            setSearchResult(result);
-            setLoading(false);
+                let result = await productService.findByName(debouncedValue);
+                console.log(result);
+                setSearchResult(result);
+                setLoading(false);
+            } catch (error) {}
         };
         getProduct();
-    }, [dedouncedValue]);
+    }, [debouncedValue]);
 
     const handleChange = (e) => {
         const searchValue = e.target.value;
@@ -64,9 +70,9 @@ function Search() {
                                     </Link>
                                 </div>
                             ))}
-                            {/* <div v-if="isEmptyProduct || products.length == 0" className="text-center">
-                                Không có sản phẩm nào
-                            </div> */}
+                            {/* {searchResult.length === 0 && loading === false && (
+                                <div className="text-center">Không có sản phẩm nào</div>
+                            )} */}
                         </div>
                     </div>
                 )}
@@ -105,24 +111,6 @@ function Search() {
                     </div>
                 </form>
             </HeadlessTippy>
-
-            <div className="search-result-container-wrapper">
-                <div className="search-result-container">
-                    <div className="search-result-item">
-                        {/* <Link
-                        className="text-dark"
-                        :to="`/product/` + removeDiacriticsAndReplaceSpaces(product.name) + '/' + product._id"
-                    > */}
-                        {/* <img data-v-84a960a5="" :src="product.img" />
-                        <div>{{ product.name }}</div>
-                        <span>{{ product.price }} ₫</span> */}
-                        {/* </Link> */}
-                    </div>
-                    {/* <div v-if="isEmptyProduct || products.length == 0" className="text-center">
-                        Không có sản phẩm nào
-                    </div> */}
-                </div>
-            </div>
         </div>
     );
 }

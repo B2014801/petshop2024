@@ -1,17 +1,9 @@
 import { Link } from 'react-router-dom';
 import Proptypes from 'prop-types';
 
+import { removeDiacriticsAndReplaceSpaces } from '~/components/functions';
+
 function Category({ category }) {
-    const removeDiacriticsAndReplaceSpaces = (inputString) => {
-        // Remove diacritics using a regular expression
-        const withoutDiacritics = inputString.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-
-        // Replace spaces with hyphens
-        const modifiedString = withoutDiacritics.replace(/\s+/g, '-');
-
-        return modifiedString;
-    };
-
     return (
         <ul className="navbar-nav">
             <li className="nav-item dropdown">
