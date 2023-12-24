@@ -2,6 +2,7 @@ import { createApiClient } from './api.service';
 class Product {
     constructor(baseUrl = '') {
         this.api = createApiClient(baseUrl, false);
+        this.apiWithAuthToken = createApiClient(baseUrl, true);
     }
     async getAllProduct() {
         return (await this.api.get('/product')).data;

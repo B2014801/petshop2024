@@ -6,7 +6,7 @@ import Login from '~/pages/auth/login';
 import Register from '~/pages/auth/register';
 import NotFound from '~/pages/notFound/notFound';
 import Brand from '~/pages/brand/brand';
-import { Product } from '~/pages/product';
+import { Product, ProductDetail } from '~/pages/product';
 
 const publicRoutes = [
     { path: config.routes.notfound, component: NotFound },
@@ -16,6 +16,7 @@ const publicRoutes = [
     { path: config.routes.login, component: Login },
     { path: config.routes.register, component: Register },
     { path: config.routes.product, component: Product },
+    { path: config.routes.productDetail, component: ProductDetail },
 ];
 
 const privateRoutes = [];

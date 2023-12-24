@@ -12,16 +12,15 @@ import store from '~/stores/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <GlobalStyles>
-            <Provider store={store}>
-                <GoogleOAuthProvider clientId={process.env.REACT_APP_GG_ID}>
-                    <App />
-                </GoogleOAuthProvider>
-            </Provider>
-        </GlobalStyles>
-        ,
-    </React.StrictMode>,
+    // <React.StrictMode>
+    <GlobalStyles>
+        <Provider store={store}>
+            <GoogleOAuthProvider clientId={process.env.REACT_APP_GG_ID}>
+                <App />
+            </GoogleOAuthProvider>
+        </Provider>
+    </GlobalStyles>,
+    // </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
