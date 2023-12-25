@@ -1,6 +1,6 @@
 import { createApiClient } from './api.service';
 class CartService {
-    constructor(baseUrl = '/api/petshop/cart') {
+    constructor(baseUrl = '/cart') {
         this.api = createApiClient(baseUrl, true);
     }
 

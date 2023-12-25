@@ -32,7 +32,7 @@ function Header() {
     useEffect(() => {
         getAllCategory();
         dispatch(loadAuthState());
-    }, []);
+    }, [dispatch]);
 
     let user = useSelector((store) => store.auth.user);
     return (

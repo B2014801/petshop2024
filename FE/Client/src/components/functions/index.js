@@ -15,3 +15,20 @@ export const getProductAfterDisCount = (product) => {
     const AfterDiscount = PriceInt - (PriceInt * product.discount) / 100;
     return formatNumberWithDot(AfterDiscount);
 };
+export const getTemporaryPriceOfOneProduct = (price, amount) => {
+    const priceInt = price.replace(/\./g, ''); //1.000.000 to 1000000
+
+    const priceFinal = formatNumberWithDot(priceInt * amount);
+    return priceFinal;
+};
+
+export const getTemporaryPrice = (cart, voucher = null) => {
+    if (cart.length !== 0) {
+        const temporary_price = cart.reduce(
+            (total, item) => total + item.Amount * item.ProductData.price.replace(/\./g, ''),
+            0,
+        );
+        // if (temporary_price) {
+        return formatNumberWithDot(temporary_price);
+    }
+};

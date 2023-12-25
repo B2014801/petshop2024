@@ -7,18 +7,22 @@ import Register from '~/pages/auth/register';
 import NotFound from '~/pages/notFound/notFound';
 import Brand from '~/pages/brand/brand';
 import { Product, ProductDetail } from '~/pages/product';
+import { CheckOut } from '~/pages/checkout';
 
 const publicRoutes = [
     { path: config.routes.notfound, component: NotFound },
     { path: config.routes.home, component: Home },
     { path: config.routes.brand, component: Brand },
-    { path: config.routes.cart, component: Cart },
+
     { path: config.routes.login, component: Login },
     { path: config.routes.register, component: Register },
     { path: config.routes.product, component: Product },
     { path: config.routes.productDetail, component: ProductDetail },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+    { path: config.routes.cart, component: Cart },
+    { path: config.routes.checkout, component: CheckOut },
+];
 
 export { publicRoutes, privateRoutes };
