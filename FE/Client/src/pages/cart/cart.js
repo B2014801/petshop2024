@@ -97,7 +97,7 @@ function Cart() {
     //usememo
 
     const totalPrice = useMemo(() => {
-        getTemporaryPrice(state.cart);
+        return getTemporaryPrice(state.cart);
     }, [state.cart]);
 
     const handleChangeAmount = (index, value) => {

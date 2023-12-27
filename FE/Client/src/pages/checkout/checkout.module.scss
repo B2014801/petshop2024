@@ -1,0 +1,51 @@
+.CheckOut-Product-table {
+    width: 100%;
+    border: 2px dashed #a48c8ca8;
+    border-collapse: collapse;
+    margin-bottom: 6px;
+    th,
+    td {
+        border: 2px dashed #a48c8ca8;
+        padding: 10px;
+    }
+}
+.voucher-container {
+    margin: 0 auto;
+    width: 50%;
+    background-color: #fff;
+    & > div {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+    .voucher-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        i:hover {
+            color: rgb(118, 128, 114);
+            cursor: pointer;
+        }
+    }
+    .voucher-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        p {
+            font-size: 12px;
+            margin: 0;
+        }
+        &:hover {
+            background-color: rgb(225, 245, 219);
+            cursor: pointer;
+        }
+    }
+}
+.checkout-detail {
+    padding: 0 10px;
+    div {
+        margin: 4px 0;
+        display: flex;
+        justify-content: space-between;
+    }
+}

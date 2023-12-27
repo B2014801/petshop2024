@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import VietNamAddress from '~/services/another_service/vietnamaddress.service';
 
-function VnAddress({ isClickSubmit, user_address = null, sendAddressData }) {
+function VnAddress({ isClickSubmit, user_address = null, sendAddressData, sendIsValid = () => {} }) {
     const [selectedTown, setSelectedTown] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedWard, setSelectedWard] = useState('');
@@ -33,18 +33,9 @@ function VnAddress({ isClickSubmit, user_address = null, sendAddressData }) {
         }
     };
 
-    const getAddressFromUser = () => {
-        if (user_address) {
-            let address = user_address.split(',');
-            setSelectedTown(address[2].trim());
-            setSelectedDistrict(address[1].trim());
-            setSelectedWard(address[0].trim());
-        }
-    };
-
     const emitAddressData = () => {
         if (isChosenAddress()) {
-            const data = { address: selectedTown + ', ' + selectedDistrict + ', ' + selectedWard };
+            const data = { address: selectedWard + ', ' + selectedDistrict + ', ' + selectedTown };
 
             sendAddressData(data);
         }
@@ -84,14 +75,21 @@ function VnAddress({ isClickSubmit, user_address = null, sendAddressData }) {
 
     useEffect(() => {
         emitAddressData();
-        // sendIsChosenAddress(isChosenAddress());
+
+        sendIsValid(isChosenAddress());
     }, [selectedWard]);
 
     useEffect(() => {
         getVietNamAddress();
-        getAddressFromUser();
-        emitAddressData();
-    }, []);
+
+        if (user_address) {
+            let address = user_address.split(',');
+            setSelectedTown(address[2].trim());
+            setSelectedDistrict(address[1].trim());
+            setSelectedWard(address[0].trim());
+            // emitAddressData();
+        }
+    }, [user_address]);
 
     return (
         <div className="form-group font-weight-bold mt-2" style={{ display: address.length !== 0 ? 'block' : 'none' }}>

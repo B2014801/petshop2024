@@ -155,7 +155,7 @@ function RegisterForm({ sendUserRegisterData }) {
                                 setUserData((prev) => ({ ...prev, ...data }));
                             }}
                         />
-                        {isHaveAddress == false && <strong className="text-danger">Chọn địa chỉ</strong>}
+                        {isHaveAddress === false && <strong className="text-danger">Chọn địa chỉ</strong>}
                     </div>
                     <div className={cx('btn-login-register-container')}>
                         <button className="btn btn-info me-4" name="dangky" type="submit">

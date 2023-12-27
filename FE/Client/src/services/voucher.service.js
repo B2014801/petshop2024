@@ -1,6 +1,6 @@
 import { createApiClient } from './api.service';
 class Voucher {
-    constructor(baseUrl = '/api/petshop/voucher') {
+    constructor(baseUrl = '/voucher') {
         this.api = createApiClient(baseUrl, true);
     }
     async create(data) {

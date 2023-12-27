@@ -22,13 +22,19 @@ export const getTemporaryPriceOfOneProduct = (price, amount) => {
     return priceFinal;
 };
 
-export const getTemporaryPrice = (cart, voucher = null) => {
+export const getTemporaryPrice = (cart, vouchers = null) => {
     if (cart.length !== 0) {
         const temporary_price = cart.reduce(
             (total, item) => total + item.Amount * item.ProductData.price.replace(/\./g, ''),
             0,
         );
-        // if (temporary_price) {
-        return formatNumberWithDot(temporary_price);
+
+        if (!vouchers) {
+            return formatNumberWithDot(temporary_price);
+        } else {
+            let discount_percent = 0;
+            discount_percent = vouchers.reduce((total, voucher) => total + voucher.discount, 0);
+            return formatNumberWithDot(temporary_price - (temporary_price * discount_percent) / 100 + 15000);
+        }
     }
 };
