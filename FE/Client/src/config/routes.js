@@ -8,7 +8,7 @@ const routes = {
     productDetail: '/product/:ProductName/:id',
     checkout: '/checkout',
     user: 'user',
-    userPurchase: 'purchase/:state',
+    userPurchase: 'purchase/:stateId',
     userProfile: 'profile',
     notfound: '*',
 };

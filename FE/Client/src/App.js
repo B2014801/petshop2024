@@ -50,7 +50,6 @@ function App() {
                         >
                             {route.nestRoute &&
                                 route.nestRoute.map((nestedRoute, index) => {
-                                    console.log(route, nestedRoute);
                                     const Page2 = nestedRoute.component;
                                     return (
                                         <Route
