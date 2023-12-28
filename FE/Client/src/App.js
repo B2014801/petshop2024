@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { publicRoutes, privateRoutes } from '~/routes';
 import { defaultLayout } from '~/layouts';
 import { loadAuthState } from './stores/auth.store';
+import { UserHome } from './pages/user';
 
 function App() {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -46,7 +47,20 @@ function App() {
                             key={index}
                             path={route.path}
                             element={<Layout>{user ? <Page></Page> : <Navigate to={'/login'} />}</Layout>}
-                        />
+                        >
+                            {route.nestRoute &&
+                                route.nestRoute.map((nestedRoute, index) => {
+                                    console.log(route, nestedRoute);
+                                    const Page2 = nestedRoute.component;
+                                    return (
+                                        <Route
+                                            key={'nest' + nestedRoute.path}
+                                            path={nestedRoute.path}
+                                            element={<Page2></Page2>}
+                                        />
+                                    );
+                                })}
+                        </Route>
                     );
                 })}
             </Routes>

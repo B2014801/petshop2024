@@ -84,7 +84,7 @@ function Header() {
                             </span>
                         ) : (
                             <span>
-                                <Link to="/user/profile">
+                                <Link to="/user">
                                     <FontAwesomeIcon icon={faUser} />
                                 </Link>
                             </span>

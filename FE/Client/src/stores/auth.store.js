@@ -11,8 +11,8 @@ export const counterSlice = createSlice({
         loadAuthState: (state) => {
             state.user = JSON.parse(localStorage.getItem('user'));
         },
-        logout: () => {
-            this.user = null;
+        logout: (state) => {
+            state.user = null;
             localStorage.removeItem('user');
             // let CartStore = cartStore();
             // CartStore.setAmount(0);

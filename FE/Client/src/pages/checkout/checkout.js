@@ -28,7 +28,7 @@ function CheckOut() {
         isShowLoading: null,
         countUpdateTime: 0,
         showVoucherModal: false,
-        isuserDataValid: null,
+        isUserValid: null,
     });
 
     useEffect(() => {
@@ -85,30 +85,30 @@ function CheckOut() {
     const handleCheckOut = async () => {
         try {
             if (checkEnoughProductNumber() === true) {
-                // if (this.isuserDataValid) {
-                if (state.paymentMethod && state.paymentMethod !== 'nochoose') {
-                    setState((prev) => ({ ...prev, isShowLoading: true }));
-                    const Detail = getDetail();
-                    const voucher = [];
-                    state.selectedVoucher2.map((index) => voucher.push(state.vouchers[index]));
+                if (state.isUserValid) {
+                    if (state.paymentMethod && state.paymentMethod !== 'nochoose') {
+                        setState((prev) => ({ ...prev, isShowLoading: true }));
+                        const Detail = getDetail();
+                        const voucher = [];
+                        state.selectedVoucher2.map((index) => voucher.push(state.vouchers[index]));
 
-                    let data = {
-                        UserId: user.user._id,
-                        PaymentMethod: state.paymentMethod,
-                        Detail: Detail,
-                        Vouchers: voucher,
-                        Total: totalPrice,
-                    };
-                    const result = await invoiceService.create(data);
-                    if (result) {
-                        setState((prev) => ({ ...prev, isShowLoading: false }));
+                        let data = {
+                            UserId: user.user._id,
+                            PaymentMethod: state.paymentMethod,
+                            Detail: Detail,
+                            Vouchers: voucher,
+                            Total: totalPrice,
+                        };
+                        const result = await invoiceService.create(data);
+                        if (result) {
+                            setState((prev) => ({ ...prev, isShowLoading: false }));
+                        }
+                    } else {
+                        setState((prev) => ({ ...prev, paymentMethod: 'nochoose' }));
                     }
                 } else {
-                    setState((prev) => ({ ...prev, paymentMethod: 'nochoose' }));
+                    alert('vui lòng cập nhật thông tin');
                 }
-                // } else {
-                //     alert('vui lòng cập nhật thông tin');
-                // }
             } else {
                 navigate('/cart');
             }
@@ -178,7 +178,7 @@ function CheckOut() {
                 <div className="col-md-6 col-12 mb-2">
                     <h3 className="col-12 pl-0">Thông tin thanh toán</h3>
 
-                    <UpdateUserInforForm />
+                    <UpdateUserInforForm sendIsValid={(vl) => setState((prev) => ({ ...prev, isUserValid: vl }))} />
                 </div>
 
                 <div className="col-md-6 col-12 mb-2 col" style={{ border: '2px solid blue' }}>

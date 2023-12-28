@@ -18,7 +18,7 @@ const loginValidate = yup.object().shape({
     password: yup.string().required('Vui lòng nhập mật khẩu'),
 });
 
-function LoginForm({ sendUserData }) {
+function LoginForm({ sendUserData, wrongEmailOrPass }) {
     const {
         register,
         handleSubmit,
@@ -74,9 +74,7 @@ function LoginForm({ sendUserData }) {
             {/* <Form @submit="submitLogin" :validation-schema="loginValidate"> */}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="m-3">
-                    {/* <strong v-if="errorLoginEmailOrPassword" class="text-danger">
-                        Email hoặc mật khẩu không hợp lệ
-                    </strong> */}
+                    {wrongEmailOrPass && <strong class="text-danger">Email hoặc mật khẩu không hợp lệ</strong>}
                     <div className="form-group font-weight-bold">
                         <label for="email">
                             Email <strong class="text-danger">(*)</strong>{' '}

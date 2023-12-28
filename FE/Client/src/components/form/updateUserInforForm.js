@@ -2,19 +2,31 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import bcrypt from 'bcryptjs';
+import classNames from 'classnames/bind';
+import { useDispatch } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
+import style from './form.module.scss';
 import Model1 from '../modals/modal1';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { userSerVice } from '~/services';
 import VnAddress from '../address/vnAddress';
 import { Success } from '../notification';
+import { logout } from '~/stores/auth.store';
+import Warning from '../notification/warning';
+import { areObjectsEqual } from '~/components/functions';
+import { useNavigate } from 'react-router-dom';
 
-function UpdateUserInforForm({ isShowImg = false }) {
+const cx = classNames.bind(style);
+function UpdateUserInforForm({ isShowImg = false, sendIsValid = () => {} }) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const user = useSelector((store) => store.auth.user);
     const [state, setState] = useState({
         user: null,
-        data_address: [],
+        address: null,
         isChosenAddres: true,
         imageUrl: null,
         isuserValid: null,
@@ -42,12 +54,14 @@ function UpdateUserInforForm({ isShowImg = false }) {
             .string()
             .required('Bạn chưa nhập mật khẩu')
             .max(100, 'Mật khẩu tối đa 100 ký tự.')
-            .min(8, 'Tối thiếu 8 ký tự'),
+            .min(8, 'Tối thiếu 8 ký tự')
+            .notOneOf([yup.ref('old_password')], 'Phải khác mật khẩu cũ'),
         old_password: yup
             .string()
             .required('Bạn chưa nhập mật khẩu')
             .max(100, 'Mật khẩu tối đa 100 ký tự.')
             .min(8, 'Tối thiếu 8 ký tự'),
+
         password_repeat: yup
             .string()
             .required('Mật khẩu không khớp')
@@ -63,6 +77,7 @@ function UpdateUserInforForm({ isShowImg = false }) {
         handleSubmit: passwordFormSubmit,
         register: passwordFormRegister,
         formState: passwordFormError,
+        setValue: passwordFormSetvalue,
     } = useForm({ resolver: yupResolver(passwordValidate) });
 
     useEffect(() => {
@@ -70,14 +85,15 @@ function UpdateUserInforForm({ isShowImg = false }) {
             (async () => {
                 let rs = await userSerVice.getUser(user.user._id);
                 if (rs) {
+                    console.log(rs);
                     setState((prev) => ({ ...prev, user: rs }));
                     setValue('name', rs.name);
                     setValue('phone', rs.phone);
                 }
             })();
         }
-    }, [setValue, user]);
-    const handleSubmitUser = async (data) => {
+    }, [setValue, user, state.countUpdateTime]);
+    const handleSubmitUser = async (data, passwords = null) => {
         try {
             if (state.isChosenAddres) {
                 let formData = new FormData();
@@ -85,43 +101,52 @@ function UpdateUserInforForm({ isShowImg = false }) {
                     ...state.user,
                     phone: data.phone,
                     name: data.name,
+                    address: state.address,
+                    password: passwords ?? state.user.password,
                 };
-                // Utility function to append object properties to FormData
-                function appendIfDefined(key, value) {
-                    if (value !== undefined && value !== null) {
-                        formData.append(key, value);
-                    }
+                if (passwords) {
+                    user.password = passwords;
                 }
-                for (const key in user) {
-                    if (user.hasOwnProperty(key)) {
-                        appendIfDefined(key, user[key]);
+                if (!areObjectsEqual(user, state.user)) {
+                    // Utility function to append object properties to FormData
+                    function appendIfDefined(key, value) {
+                        if (value !== undefined && value !== null) {
+                            formData.append(key, value);
+                        }
                     }
-                }
-                let rs = await userSerVice.update(formData);
-                if (rs) {
-                    setState((prev) => ({ ...prev, countUpdateTime: prev.countUpdateTime + 1 }));
+                    for (const key in user) {
+                        if (user.hasOwnProperty(key)) {
+                            appendIfDefined(key, user[key]);
+                        }
+                    }
+                    let rs = await userSerVice.update(formData);
+                    if (rs) {
+                        console.log(rs);
+                        setState((prev) => ({ ...prev, countUpdateTime: prev.countUpdateTime + 1 }));
+                    }
                 }
             }
         } catch (error) {
             console.log(error);
         }
     };
-    const handleChangePassword = async () => {
+    const handleChangePassword = async (data) => {
         // const hashedPassword = await bcrypt.hash(this.newpassword, saltRounds);
         try {
-            const isMatch = await bcrypt.compare(this.newUserData.oldpass, this.user.password);
+            //(text, hash)
+            const isMatch = await bcrypt.compare(data.old_password, state.user.password);
             if (isMatch) {
                 const saltRounds = 10; // Number of salt rounds
-                this._user.password = await bcrypt.hash(this.newUserData.newpass, saltRounds);
-                this.handleSubmit();
-                this.closeModel();
-                this.newUserData = {
-                    oldpass: '',
-                    newpass: '',
-                };
-                this.isShowWrongOldPass = false;
+                const hashedPassword = await bcrypt.hash(data.password_repeat, saltRounds);
+                // this.handleSubmit();
+                const dataUser = { ...state.user, password: hashedPassword };
+                handleSubmitUser(dataUser, hashedPassword);
+                passwordFormSetvalue('old_password', '');
+                passwordFormSetvalue('password', '');
+                passwordFormSetvalue('password_repeat', '');
+                setState((prev) => ({ ...prev, showModal: false, sWrongOldPass: false }));
             } else {
-                this.isShowWrongOldPass = true;
+                setState((prev) => ({ ...prev, sWrongOldPass: true }));
             }
         } catch (error) {
             console.error('Error verifying password:', error);
@@ -149,18 +174,30 @@ function UpdateUserInforForm({ isShowImg = false }) {
         }
     };
     const handleSetAddres = (data) => {
-        if (data && data.address !== state.user.address) {
+        // eslint-disable-next-line eqeqeq
+        if (data && data.address != state.address) {
             setState((prev) => ({
                 ...prev,
-                user: { ...prev.user, address: data.address },
+                address: data.address,
             }));
         }
     };
+    // for first time with gg
+    const isUserValid = useMemo(() => {
+        if (state.user) {
+            let vl = state.user.hasOwnProperty('phone') && state.user.hasOwnProperty('address');
+            sendIsValid(vl);
+            return vl;
+        }
+    }, [state.user]);
     return (
         <>
             {state.user && (
                 <>
-                    <form onSubmit={userFormSubmit(handleSubmitUser)} encType="multipart/form-data">
+                    <form
+                        onSubmit={userFormSubmit((data) => handleSubmitUser(data, null))}
+                        encType="multipart/form-data"
+                    >
                         <div className="row">
                             {isShowImg && (
                                 <div className="col-md-4 col-sm-12 col-12 text-center">
@@ -199,6 +236,7 @@ function UpdateUserInforForm({ isShowImg = false }) {
                                     <i className="fa fa-warning me-2" style="color: #f7c102"></i> Vui lòng cập nhật
                                     thông tin
                                 </h6> */}
+                                {!isUserValid && <Warning message={'Vui lòng cập nhật thông tin'} />}
 
                                 <div>
                                     {/* <h6 v-if="countUpdateTime > 0" className="text-left my-2" style="color: #37e32a">
@@ -249,7 +287,7 @@ function UpdateUserInforForm({ isShowImg = false }) {
                                         {!state.isChosenAddres && <strong className="text-danger">Chọn địa chỉ</strong>}
                                     </div>
 
-                                    <div className="profile-update-btn">
+                                    <div className={cx('profile-update-btn')}>
                                         <button className="btn btn-success" type="submit">
                                             Cập nhật
                                         </button>
@@ -260,11 +298,23 @@ function UpdateUserInforForm({ isShowImg = false }) {
                                                     name="doimatkhau"
                                                     data-toggle="modal"
                                                     data-target="#modal-doimk"
-                                                    // @click.prevent="handleShowModel"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setState((prev) => ({ ...prev, showModal: true }));
+                                                    }}
                                                 >
                                                     Đổi mật khẩu
                                                 </button>
-                                                <button className="btn btn-danger">Đăng xuất</button>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        dispatch(logout());
+                                                        navigate('/login');
+                                                    }}
+                                                    className="btn btn-danger"
+                                                >
+                                                    Đăng xuất
+                                                </button>
                                             </>
                                         )}
                                     </div>
@@ -272,26 +322,34 @@ function UpdateUserInforForm({ isShowImg = false }) {
                             </div>
                         </div>
                     </form>
-                    <Model1>
-                        <div className="profile-change-password-model">
-                            <form>
-                                <div v-if="isShowWrongOldPass">
-                                    <strong className="text-danger">Mật khẩu cũ không chính xác</strong>
-                                </div>
+                    <Model1 show={state.showModal} isClosed={() => setState((prev) => ({ ...prev, showModal: false }))}>
+                        <div className={cx('profile-change-password-model')}>
+                            <form onSubmit={passwordFormSubmit(handleChangePassword)}>
+                                {state.sWrongOldPass && (
+                                    <div>
+                                        <strong className="text-danger">Mật khẩu cũ không chính xác</strong>
+                                    </div>
+                                )}
                                 <div className="form-group">
                                     <label for="">
                                         Mật khẩu cũ <strong className="text-danger">(*)</strong>
                                     </label>
                                     <div className="input-group border rounded">
                                         <input
-                                            // :type="isShowPassword0 ? 'text' : 'password'"
+                                            type={state.sP1 ? 'text' : 'password'}
                                             className="form-control m-0 border-0"
                                             name="old_password"
-                                            v-model="newUserData.oldpass"
+                                            {...passwordFormRegister('old_password')}
                                         ></input>
-                                        <i className="fa-sharp fa-solid fa-eye border-0 bg-white px-2 my-auto"></i>
+                                        <FontAwesomeIcon
+                                            onClick={() => setState((prev) => ({ ...prev, sP1: !prev.sP1 }))}
+                                            className="border-0 bg-white px-2 my-auto"
+                                            icon={faEye}
+                                        />
                                     </div>
-                                    {/* <ErrorMessage name="old_password" className="text-danger" /> */}
+                                    <trong className="text-danger">
+                                        {passwordFormError.errors.old_password?.message}
+                                    </trong>
                                 </div>
                                 <div className="form-group">
                                     <label for="">
@@ -299,13 +357,18 @@ function UpdateUserInforForm({ isShowImg = false }) {
                                     </label>
                                     <div className="input-group border rounded">
                                         <input
-                                            // :type="isShowPassword1 ? 'text' : 'password'"
+                                            type={state.sP2 ? 'text' : 'password'}
                                             className="form-control m-0 border-0"
                                             name="password"
+                                            {...passwordFormRegister('password')}
                                         ></input>
-                                        <i className="fa-sharp fa-solid fa-eye border-0 bg-white px-2 my-auto"></i>
+                                        <FontAwesomeIcon
+                                            onClick={() => setState((prev) => ({ ...prev, sP2: !prev.sP2 }))}
+                                            className="border-0 bg-white px-2 my-auto"
+                                            icon={faEye}
+                                        />
                                     </div>
-                                    {/* <ErrorMessage name="password" className="text-danger" /> */}
+                                    <trong className="text-danger">{passwordFormError.errors.password?.message}</trong>
                                 </div>
                                 <div className="form-group">
                                     <label for="">
@@ -313,14 +376,20 @@ function UpdateUserInforForm({ isShowImg = false }) {
                                     </label>
                                     <div className="input-group border rounded">
                                         <input
-                                            // :type="isShowPassword2 ? 'text' : 'password'"
+                                            type={state.sP3 ? 'text' : 'password'}
                                             className="form-control m-0 border-0"
                                             name="password_repeat"
-                                            v-model="newUserData.newpass"
+                                            {...passwordFormRegister('password_repeat')}
                                         ></input>
-                                        <i className="fa-sharp fa-solid fa-eye border-0 bg-white px-2 my-auto"></i>
+                                        <FontAwesomeIcon
+                                            onClick={() => setState((prev) => ({ ...prev, sP3: !prev.sP3 }))}
+                                            className="border-0 bg-white px-2 my-auto"
+                                            icon={faEye}
+                                        />
                                     </div>
-                                    {/* <ErrorMessage name="password_repeat" className="text-danger" /> */}
+                                    <trong className="text-danger">
+                                        {passwordFormError.errors.password_repeat?.message}
+                                    </trong>
                                 </div>
                                 <div>
                                     <button className="btn btn-success" type="submit">
