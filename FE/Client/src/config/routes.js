@@ -10,6 +10,7 @@ const routes = {
     user: 'user',
     userPurchase: 'purchase/:stateId',
     userProfile: 'profile',
+    pictureSearch: '/pictureSearch',
     notfound: '*',
 };
 

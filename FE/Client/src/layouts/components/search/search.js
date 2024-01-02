@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faSpinner, faCamera } from '@fortawesome/free-solid-svg-icons';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import style from './search.module.scss';
 import { useDebounce } from '~/components/hooks';
 import productService from '~/services/product.service';
 import { removeDiacriticsAndReplaceSpaces } from '~/components/functions';
-
+import Micro from './micro';
 const cx = classNames.bind(style);
 
 function Search() {
@@ -70,9 +70,6 @@ function Search() {
                                     </Link>
                                 </div>
                             ))}
-                            {/* {searchResult.length === 0 && loading === false && (
-                                <div className="text-center">Không có sản phẩm nào</div>
-                            )} */}
                         </div>
                     </div>
                 )}
@@ -81,7 +78,24 @@ function Search() {
                 }}
             >
                 <form>
-                    <div className="input-group-form">
+                    <div className={cx('input-group-form')}>
+                        <div className={cx('search-submit-btn')}>
+                            {!loading && (
+                                <button type="submit" className="border-0 p-0 bg-white">
+                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                </button>
+                            )}
+                            {loading && (
+                                <button
+                                    className="border-0 bg-white p-0"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                >
+                                    <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
+                                </button>
+                            )}
+                        </div>
                         <input
                             className="search-header border-0"
                             type="search"
@@ -92,22 +106,16 @@ function Search() {
                             onFocus={() => setShowResult(true)}
                             onChange={handleChange}
                         />
-                        {!loading && (
-                            <button type="submit" className="border-0 bg-white">
-                                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            </button>
-                        )}
-                        {loading && (
-                            <button
-                                className="border-0 bg-white"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                }}
-                            >
-                                <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
-                            </button>
-                        )}
-                        {/* <HalfCircleSpinner v-else className="mx-auto" :animation-duration="1200" :size="20" color="#4f0b14" /> */}
+                        <div className={cx('search-type-right')}>
+                            <div className={cx('search-micro')}>
+                                <Micro />
+                            </div>
+                            <div className={cx('search-camera')}>
+                                <Link to="/pictureSearch">
+                                    <FontAwesomeIcon icon={faCamera} />
+                                </Link>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </HeadlessTippy>

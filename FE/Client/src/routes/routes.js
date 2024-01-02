@@ -9,6 +9,7 @@ import Brand from '~/pages/brand/brand';
 import { Product, ProductDetail } from '~/pages/product';
 import { CheckOut } from '~/pages/checkout';
 import { UserHome, Purchase, Profile } from '~/pages/user';
+import { PictureSearch } from '~/pages/search';
 
 const publicRoutes = [
     { path: config.routes.notfound, component: NotFound },
@@ -19,6 +20,7 @@ const publicRoutes = [
     { path: config.routes.register, component: Register },
     { path: config.routes.product, component: Product },
     { path: config.routes.productDetail, component: ProductDetail },
+    { path: config.routes.pictureSearch, component: PictureSearch },
 ];
 
 const privateRoutes = [

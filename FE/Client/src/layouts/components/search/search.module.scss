@@ -2,17 +2,13 @@
     input {
         outline: none;
     }
-    form {
+        position: relative;
+    .input-group-form{
         background-color: white;
         margin: 6px;
-        padding: 4px;
-        border-radius: 6px;
+        height: 34px;
+        border-radius: 20px;
     }
-    .input-group-form {
-        display: flex;
-        align-items: center !important;
-    }
-    position: relative;
     .search-result-container-wrapper {
         
         z-index: 1;
@@ -59,7 +55,25 @@
     animation: spinner 0.8s linear infinite;
 
 }
-
+.search-submit-btn,.search-type-right{
+    padding: 0 12px;
+    height: 100%;
+    button{
+        opacity: 0.6;
+        cursor: pointer;
+    }
+}
+.input-group-form,.search-submit-btn,.search-type-right {
+    display: flex;
+    align-items: center !important;
+}
+.search-micro{
+    margin-right: 12px;
+}
+.search-micro,.search-camera>a,.search-camera>a:hover {
+    cursor: pointer;
+    color: var(--primary) ;
+}
 @keyframes spinner {
     from {
         transform: rotate(0);

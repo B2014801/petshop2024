@@ -12,6 +12,7 @@ import productService from '~/services/product.service';
 import { loadAuthState } from '~/stores/auth.store';
 import categoryService from '~/services/category.service';
 import Search from '../search/search';
+import Micro from '../search/micro';
 
 const cx = classNames.bind(style);
 function Header() {
@@ -48,19 +49,7 @@ function Header() {
                     </Link>
                     <div className="collapse navbar-collapse justify-content-between mr-3">
                         <Category category={category} />
-                        <div className="header-search">
-                            {/* 
-                    <Search
-                        @value="getProductWithName"
-                        :products="products"
-                        :LoadingSearch="LoadingSearch"
-                        :isEmptyProduct="isEmptyProduct"
-                        :isSearch="isSearch"
-                    ></Search>
-                    
-                    <div>
-                        <Microphone></Microphone>
-                    </div> */}
+                        <div className={cx('header-search')}>
                             <Search />
                         </div>
                     </div>

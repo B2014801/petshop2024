@@ -1,0 +1,22 @@
+.picture-search-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    background-color: #f8f9fa;
+    width: 40%;
+    text-align: center;
+    align-items: center;
+
+    .picture-search-body{
+        label{
+            color: var(--primary);
+        }
+
+        img{
+            width: 90%;
+            max-height: 300px;
+            height: auto;
+        }
+    }
+}

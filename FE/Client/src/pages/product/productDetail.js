@@ -168,9 +168,9 @@ function ProductDetail() {
                 <>
                     <section>
                         {state.isShowAddToCartSuccess && (
-                            <Success className={'my-2'} message={`${state.product.name}  đã được thêm vào giỏ hàng`} />
+                            <Success className={'mt-2'} message={`${state.product.name}  đã được thêm vào giỏ hàng`} />
                         )}
-                        <div className="row mb-2">
+                        <div className="row my-2">
                             <div className="col-md-5 col-12">
                                 <div className="card text-center border-0">
                                     <div className="mt-2">
