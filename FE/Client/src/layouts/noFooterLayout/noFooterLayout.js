@@ -1,7 +1,9 @@
+import Header from '~/layouts/components/header';
+
 function DefaultLayout({ children }) {
     return (
         <div>
-            no header
+            <Header />
             <div>{children}</div>
         </div>
     );

@@ -14,6 +14,9 @@ class Product {
     async findProductById(id) {
         return (await this.api.get(`/product/${id}`)).data;
     }
+    async findProductByImg(img) {
+        return (await this.api.post('/product_img', img)).data;
+    }
     async createUser(data) {
         return (await this.api.post('/auth/register', data)).data;
     }
