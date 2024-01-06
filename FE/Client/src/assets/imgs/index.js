@@ -9,9 +9,7 @@ import bia3 from '~/assets/imgs/about/bia3.jpeg';
 import contact_bia1 from '~/assets/imgs/contact/contact-bia1.jpg';
 const images = {
     logo: logo,
-    home1: home1,
-    home2: home2,
-    home3: home3,
+    home: [home1, home2, home3],
     zalo: zalo,
     about: {
         bia1: bia1,

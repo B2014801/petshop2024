@@ -1,0 +1,23 @@
+.slider-container{
+    position: relative;
+
+    .next-img,.prev-img{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgb(53, 35, 35);
+        font-size: 26px;
+        
+    }
+    .next-img{
+        right: 10%;
+    }
+    .prev-img{
+        z-index: 1;
+        left: 10%;
+    }
+}
+
