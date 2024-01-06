@@ -82,3 +82,95 @@
         transform: rotate(360deg);
     }
 }
+//micro
+$primary: #189bff;
+$secondary: #d8d8d8;
+$size: 60px;
+/* Add your component-specific styles here */
+.microphone-model-container {
+    padding: 0 0 16px 32px;
+    background-color: #fff;
+    color: #000;
+    font-size: 24px;
+    .microphone-close-model {
+        margin: 8px;
+        text-align: end;
+    }
+    .microphone-model-title-event {
+        padding: 48px 0 24px;
+    }
+    .micro-btn-animation {
+        border: none;
+        padding: 0;
+        border-radius: 100%;
+        width: $size;
+        height: $size;
+        font-size: 3em;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+
+        position: relative;
+        z-index: 999;
+        display: flex;
+        line-height: $size;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        svg {
+            font-size: 0.5em;
+        }
+    }
+
+    .pulse-ring {
+        content: '';
+        width: $size;
+        height: $size;
+        background: $primary;
+        border: 5px solid $primary;
+        border-radius: 50%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        animation: pulsate infinite 1.5s;
+    }
+
+    .pulse-ring.delay {
+        // animation-delay: 1s;
+    }
+
+    @keyframes pulsate {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+    }
+
+    .container {
+        display: flex;
+        align-items: end;
+        justify-content: center;
+        height: 30vh;
+    }
+
+    .type2 {
+        background: $primary;
+    }
+
+    .type2 .pulse-ring {
+        background: transparent;
+    }
+}

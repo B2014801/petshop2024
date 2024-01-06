@@ -9,7 +9,7 @@ import Brand from '~/pages/brand/brand';
 import { Product, ProductDetail } from '~/pages/product';
 import { CheckOut } from '~/pages/checkout';
 import { UserHome, Purchase, Profile } from '~/pages/user';
-import { PictureSearch } from '~/pages/search';
+import { NameSearch, PictureSearch } from '~/pages/search';
 import { noFooterLayout } from '~/layouts';
 
 const publicRoutes = [
@@ -22,6 +22,7 @@ const publicRoutes = [
     { path: config.routes.product, component: Product },
     { path: config.routes.productDetail, component: ProductDetail },
     { path: config.routes.pictureSearch, component: PictureSearch, Layout: noFooterLayout },
+    { path: config.routes.nameSearch, component: NameSearch },
 ];
 
 const privateRoutes = [

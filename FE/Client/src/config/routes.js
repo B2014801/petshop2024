@@ -11,6 +11,7 @@ const routes = {
     userPurchase: 'purchase/:stateId',
     userProfile: 'profile',
     pictureSearch: '/pictureSearch',
+    nameSearch: '/search',
     notfound: '*',
 };
 

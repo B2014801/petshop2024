@@ -4,6 +4,7 @@ import { faMagnifyingGlass, faSpinner, faCamera } from '@fortawesome/free-solid-
 import HeadlessTippy from '@tippyjs/react/headless';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import style from './search.module.scss';
 import { useDebounce } from '~/components/hooks';
@@ -13,6 +14,7 @@ import Micro from './micro';
 const cx = classNames.bind(style);
 
 function Search() {
+    const navigate = useNavigate();
     const [showResult, setShowResult] = useState(false);
     const [loading, setLoading] = useState(null);
     const [searchValue, setSearchValue] = useState('');
@@ -30,7 +32,6 @@ function Search() {
                 setLoading(true);
 
                 let result = await productService.findByName(debouncedValue);
-                console.log(result);
                 setSearchResult(result);
                 setLoading(false);
             } catch (error) {}
@@ -43,6 +44,10 @@ function Search() {
         if (!searchValue.startsWith(' ') && !searchValue.startsWith('&')) {
             setSearchValue(searchValue);
         }
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        navigate(`/search?key=${searchValue}`);
     };
 
     return (
@@ -77,7 +82,7 @@ function Search() {
                     setShowResult(false);
                 }}
             >
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className={cx('input-group-form')}>
                         <div className={cx('search-submit-btn')}>
                             {!loading && (
@@ -108,7 +113,12 @@ function Search() {
                         />
                         <div className={cx('search-type-right')}>
                             <div className={cx('search-micro')}>
-                                <Micro />
+                                <Micro
+                                    sendValue={(val) => {
+                                        setSearchValue(val);
+                                        setShowResult(false);
+                                    }}
+                                />
                             </div>
                             <div className={cx('search-camera')}>
                                 <Link to="/pictureSearch">
