@@ -1,0 +1,30 @@
+a {
+    text-decoration: none !important;
+    color: #fff;
+}
+a:hover {
+    color: #fff;
+    cursor: pointer;
+}
+table {
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.22);
+}
+.table-bordered {
+    td {
+        padding: 5px;
+    }
+    td input {
+        border: 1px solid #dee2e6;
+        margin-bottom: 4px;
+    }
+    select {
+        border: 1px solid;
+    }
+}
+.error-message {
+    padding: 0;
+}
+input {
+    margin: 0;
+}

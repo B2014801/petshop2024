@@ -154,7 +154,8 @@ function CheckOut() {
     const totalPrice = useMemo(() => {
         const voucher = [];
         state.selectedVoucher2.map((index) => voucher.push(state.vouchers[index]));
-        return getTemporaryPrice(state.CheckOutData, voucher);
+        const tp = getTemporaryPrice(state.CheckOutData, voucher);
+        return tp && tp.slice(0, -2); //remove ' đ'
     }, [state.CheckOutData, state.selectedVoucher2, state.vouchers]);
 
     const isExpiredDate = useMemo(

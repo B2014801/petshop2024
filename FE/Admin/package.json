@@ -1,0 +1,41 @@
+{
+    "name": "client",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.4.2",
+        "axios": "^1.4.0",
+        "bootstrap": "^5.3.1",
+        "echarts": "^5.4.3",
+        "jquery": "^3.7.0",
+        "js-cookie": "^3.0.5",
+        "lodash": "^4.17.21",
+        "pinia": "^2.1.6",
+        "popper.js": "^1.16.1",
+        "socket.io-client": "^4.7.2",
+        "vee-validate": "^4.11.2",
+        "vue": "^3.3.4",
+        "vue-cookies": "^1.8.3",
+        "vue-echarts": "^6.6.1",
+        "vue-router": "^4.2.4",
+        "vue-tippy": "^6.3.1",
+        "vue-toastification": "^2.0.0-rc.5",
+        "vue3-carousel": "^0.3.1",
+        "vuex": "^4.0.2",
+        "yup": "^1.2.0"
+    },
+    "devDependencies": {
+        "@types/bootstrap": "^5.2.6",
+        "@types/jquery": "^3.5.16",
+        "@vitejs/plugin-vue": "^4.2.3",
+        "sass": "^1.66.1",
+        "sass-loader": "^13.3.2",
+        "vite": "^4.4.6",
+        "vue-loader": "^17.2.2"
+    }
+}

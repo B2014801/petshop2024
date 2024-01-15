@@ -85,7 +85,6 @@ function UpdateUserInforForm({ isShowImg = false, sendIsValid = () => {} }) {
             (async () => {
                 let rs = await userSerVice.getUser(user.user._id);
                 if (rs) {
-                    console.log(rs);
                     setState((prev) => ({ ...prev, user: rs }));
                     setValue('name', rs.name);
                     setValue('phone', rs.phone);

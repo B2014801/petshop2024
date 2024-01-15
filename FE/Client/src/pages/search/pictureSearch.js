@@ -12,7 +12,7 @@ function PictureSearch() {
     const [img, setImg] = useState('');
     const [loading, setLoading] = useState(null);
     const [dragenter, setDragenter] = useState(null);
-    const [product, setProduct] = useState([]);
+    const [searchResult, setSearchResult] = useState({ products: [] });
     const formRef = useRef();
 
     const handleDragOver = (e) => {
@@ -46,13 +46,13 @@ function PictureSearch() {
                     const formData = new FormData();
                     formData.append('pictureSearch', true);
                     formData.append('img', file);
-                    // const rs = await productService.findProductByImg(formData);
-                    const rs = await productService.findByName('cho');
-                    if (rs) {
-                        setLoading(false);
-                        setProduct(rs);
-                        console.log(rs);
-                    }
+                    const rs = await productService.findProductByImg(formData);
+                    // const rs = await productService.findByName('cho');
+                    // if (rs) {
+                    setLoading(false);
+                    setSearchResult(rs);
+                    console.log(rs);
+                    // }
                 })();
             } else {
                 // If no file is selected, clear the image URL
@@ -103,11 +103,20 @@ function PictureSearch() {
                     )}
                 </div>
             </div>
-            {product.length !== 0 && (
-                <div className={cx('picture-search-result')}>
-                    <ProductList products={product} customCol={'col-sm-4 col-md-4 col-lg-4'} itemsPerPage={20} />
-                </div>
-            )}
+            <div className={cx('picture-search-result', { scroll: searchResult.products?.length !== 0 })}>
+                {searchResult.breed && <h5>{searchResult.breed}</h5>}
+                {searchResult.products?.length !== 0 ? (
+                    <ProductList
+                        products={searchResult.products}
+                        customCol={'col-sm-4 col-md-4 col-lg-4'}
+                        itemsPerPage={20}
+                    />
+                ) : (
+                    loading === false && (
+                        <div className={cx('picture-search-notfound')}>Cửa hàng hiện không có giống thú cưng này</div>
+                    )
+                )}
+            </div>
             {loading && (
                 <div className={cx('loading')}>
                     <div className={cx('loading-icon')}>

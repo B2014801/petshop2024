@@ -27,6 +27,21 @@
 }
 .picture-search-result{
     height: 87vh;
+    width: 100%;
+
+    
+    h5{
+        text-align: center;
+        margin: 0.8rem 0;
+    }
+    .picture-search-notfound{
+        height: 90%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+.scroll{
     overflow-y: scroll;
 }
 .loading{
