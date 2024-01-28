@@ -4,14 +4,18 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import newsService from '~/services/news.service';
 import Search from '~/layouts/components/search/search';
+import { DividePage } from '~/components/list';
+
 const cx = classNames.bind(style);
 function News() {
     const [news, setNews] = useState([]);
+    const [news2, setNews2] = useState([]);
 
     useEffect(() => {
         (async () => {
             let news = await newsService.getNews();
             setNews(news.reverse());
+            setNews2(news.reverse());
         })();
     }, []);
     return (
@@ -19,7 +23,7 @@ function News() {
             {news.length !== 0 && (
                 <>
                     <div className={cx('news-list-container', { 'row col-md-9': true })}>
-                        {news.map((news, index) => (
+                        {news2.map((news, index) => (
                             <div className="col-md-6">
                                 <Link to={`/news/detail/${news._id}`}>
                                     <img className={cx('news-titile-img')} src={news.img} alt=""></img>
@@ -33,6 +37,9 @@ function News() {
                                 </Link>
                             </div>
                         ))}
+                        <div>
+                            <DividePage products={news} itemsPerPage={10} sendPage={(data) => setNews2(data)} />
+                        </div>
                     </div>
                     <div className={cx('news-list-right', { 'col-md-3': true })}>
                         <h5>Bài viết xem nhiều</h5>

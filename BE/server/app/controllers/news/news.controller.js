@@ -2,6 +2,8 @@ const MongoDB = require("../../utils/mongodb.util");
 const NewsService = require("../../services/news.service");
 const { ObjectId } = require("mongodb");
 const ApiError = require("../../api-errors");
+const fs = require("fs");
+const path = require("path");
 
 exports.createNews = async (req, res, next) => {
   try {
@@ -31,10 +33,20 @@ exports.deleteNews = async (req, res, next) => {
   try {
     if (req.params.id) {
       const newService = new NewsService(MongoDB.client);
+      const newsImg = await newService.getNews({
+        _id: new ObjectId(req.params.id),
+      });
+      const url = newsImg[0].img;
+      const parts = url.split("/");
+      const fileName = parts[parts.length - 1];
+      fs.unlinkSync(path.join(__dirname, `../../store/img/news/${fileName}`));
+
       let rs = await newService.deleteNews(req.params.id);
       res.send(rs);
     } else {
       return next(new ApiError(400, "id can not be empty"));
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
