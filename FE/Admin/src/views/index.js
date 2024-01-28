@@ -18,3 +18,7 @@ export { default as Revenue } from '@/views/Revenue.vue';
 export { default as Category } from '@/views/Category/Category.vue';
 
 export { default as Voucher } from '@/views/Voucher.vue';
+
+export { default as NewsList } from './News/NewsList.vue';
+export { default as NewsAdd } from './News/NewsAdd.vue';
+export { default as NewsDetail } from './News/NewsDetail.vue';

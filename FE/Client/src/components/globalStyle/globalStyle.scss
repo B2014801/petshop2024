@@ -91,7 +91,11 @@ input::-webkit-inner-spin-button {
         border-color: rgba(0, 0, 0, 0.09);
     }
 }
-
+//news
+.ql-align-center{
+    display: flex;
+    justify-content: center;
+}
 
 footer a svg {
     margin: 0 6px;

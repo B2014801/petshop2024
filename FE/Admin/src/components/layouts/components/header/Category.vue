@@ -43,6 +43,10 @@ const CategoryList = [
         title: 'Khuyến Mãi',
         link: '/voucher',
     },
+    {
+        title: 'Tin tức',
+        link: '/news',
+    },
 ];
 export default {
     data() {

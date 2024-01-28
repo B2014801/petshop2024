@@ -11,6 +11,7 @@ import { CheckOut } from '~/pages/checkout';
 import { UserHome, Purchase, Profile } from '~/pages/user';
 import { NameSearch, PictureSearch } from '~/pages/search';
 import { noFooterLayout } from '~/layouts';
+import { News, NewsDetail } from '~/pages/news';
 
 const publicRoutes = [
     { path: config.routes.notfound, component: NotFound },
@@ -23,6 +24,8 @@ const publicRoutes = [
     { path: config.routes.productDetail, component: ProductDetail },
     { path: config.routes.pictureSearch, component: PictureSearch, Layout: noFooterLayout },
     { path: config.routes.nameSearch, component: NameSearch },
+    { path: config.routes.news, component: News },
+    { path: config.routes.newsDetail, component: NewsDetail },
 ];
 
 const privateRoutes = [

@@ -12,6 +12,8 @@ const routes = {
     userProfile: 'profile',
     pictureSearch: '/pictureSearch',
     nameSearch: '/search',
+    news: '/news',
+    newsDetail: '/news/detail/:id',
     notfound: '*',
 };
 

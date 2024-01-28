@@ -14,6 +14,9 @@ import {
     Order,
     Revenue,
     Voucher,
+    NewsList,
+    NewsAdd,
+    NewsDetail,
 } from '@/views/';
 
 import { useAuthStore } from '@/stores/auth.store';
@@ -110,6 +113,18 @@ const routes = [
         component: Voucher,
         props: true,
         // props: true,
+    },
+    {
+        path: '/news',
+        component: NewsList,
+    },
+    {
+        path: '/news/add',
+        component: NewsAdd,
+    },
+    {
+        path: '/news/:id',
+        component: NewsDetail,
     },
 ];
 const router = createRouter({

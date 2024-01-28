@@ -22,6 +22,9 @@ function Category({ category }) {
                     <Link to="/about" className="dropdown-item">
                         Giới thiệu
                     </Link>
+                    <Link to="/news" className="dropdown-item">
+                        Tin tức
+                    </Link>
                     <Link to="/contact" className="dropdown-item">
                         Liên hệ
                     </Link>

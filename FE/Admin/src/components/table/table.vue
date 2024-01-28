@@ -30,7 +30,7 @@
                 <tr v-for="item in sortedAndFilteredData" :key="item">
                     <td v-for="(field, index) in fieldsMap" :key="field">
                         <slot name="orderProduct" :field="field" :item="item"></slot>
-
+                        <slot name="newsDetail" :field="field" :item="item"></slot>
                         <div v-if="field == 'edit'">
                             <div class="update-icon">
                                 <router-link :to="'/' + categoryname + '/' + item.id">
@@ -210,6 +210,9 @@ export default {
             }
         },
     },
+    mounted(){
+        console.log('data',this.Data)
+    }
 };
 </script>
 
