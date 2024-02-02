@@ -1,0 +1,20 @@
+.contact-header {
+    position: relative;
+    padding: 100px 0;
+    text-align: center;
+    margin: 2px 10px 0;
+    /* //thay the hinh nen */
+    // isolation: isolate;
+}
+.contact-header::after {
+    content: '';
+    position: absolute;
+    /* di chuyen ra phia sau text */
+    z-index: -1;
+    background-image: linear-gradient(rgba(94, 88, 88, 0.5), rgba(104, 98, 98, 0.5)),
+        url('../../assets/imgs/contact/contact-bia1.jpg');
+    background-size: 100% 100%;
+    // background-repeat: no-repeat;
+    /* position :0*/
+    inset: 0;
+}

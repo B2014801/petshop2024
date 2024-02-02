@@ -14,6 +14,8 @@ const routes = {
     nameSearch: '/search',
     news: '/news',
     newsDetail: '/news/detail/:id',
+    about: '/about',
+    contact: '/contact',
     notfound: '*',
 };
 

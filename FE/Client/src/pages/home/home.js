@@ -16,13 +16,15 @@ function Home() {
     const [product, setProduct] = useState([]);
     useEffect(() => {
         (async () => {
-            let rs = await productService.getAllProduct();
-            let reverse = rs.reverse();
-            setProduct(
-                reverse.filter((_, index) => {
-                    return index < 8;
-                }),
-            );
+            try {
+                let rs = await productService.getAllProduct();
+                let reverse = rs.reverse();
+                setProduct(
+                    reverse.filter((_, index) => {
+                        return index < 8;
+                    }),
+                );
+            } catch (e) {}
         })();
     }, []);
 
