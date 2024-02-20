@@ -235,8 +235,11 @@ function ProductDetail() {
                                         </div>
                                         <div className="mt-3">
                                             <p>
-                                                <b>Lưu ý</b>: Giá sản phẩm có thể thay đổi theo từng thời điểm.
-                                                <span className="text-primary font-weight-bold">Kết Bạn Zalo</span> hoặc
+                                                <b>Lưu ý</b>: Giá sản phẩm có thể thay đổi theo từng thời điểm.&nbsp;
+                                                <span className="text-primary font-weight-bold">
+                                                    Kết Bạn Zalo{' '}
+                                                </span>{' '}
+                                                hoặc
                                                 <span className="text-danger font-weight-bold">Gọi Hotline</span> để xem
                                                 thêm hình ảnh/video chi tiết.
                                             </p>

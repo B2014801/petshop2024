@@ -102,6 +102,7 @@ function CheckOut() {
                         const result = await invoiceService.create(data);
                         if (result) {
                             setState((prev) => ({ ...prev, isShowLoading: false }));
+                            navigate('/');
                         }
                     } else {
                         setState((prev) => ({ ...prev, paymentMethod: 'nochoose' }));

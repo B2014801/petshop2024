@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import VietNamAddress from '~/services/another_service/vietnamaddress.service';
+import dvhcvn from './dvhcvn.json';
 
 function VnAddress({ isClickSubmit, user_address = null, sendAddressData, sendIsValid = () => {} }) {
     const [selectedTown, setSelectedTown] = useState('');
@@ -9,7 +10,7 @@ function VnAddress({ isClickSubmit, user_address = null, sendAddressData, sendIs
 
     const onTownChange = (e) => {
         setSelectedTown(e.target.value);
-        const districts = selectedTownDistricts();
+        // const districts = selectedTownDistricts();
         setSelectedDistrict('');
         // console.log(selectedTownDistricts());
         setSelectedWard('');
@@ -24,15 +25,6 @@ function VnAddress({ isClickSubmit, user_address = null, sendAddressData, sendIs
         setSelectedWard(e.target.value);
     };
 
-    const getVietNamAddress = async () => {
-        try {
-            let address = await VietNamAddress.getVietNamAddress();
-            setAddress(address);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const emitAddressData = () => {
         if (isChosenAddress()) {
             const data = { address: selectedWard + ', ' + selectedDistrict + ', ' + selectedTown };
@@ -44,15 +36,15 @@ function VnAddress({ isClickSubmit, user_address = null, sendAddressData, sendIs
     const selectedTownDistricts = () => {
         if (selectedTown) {
             const selectedTownData = address.find((item) => item.name === selectedTown);
-            return selectedTownData ? selectedTownData.districts : [];
+            return selectedTownData ? selectedTownData.level2s : [];
         }
         return [];
     };
 
     const selectedDistrictWards = () => {
         if (selectedDistrict) {
-            const selectedDistrictData = selectedTownDistricts().find((item) => item.name === selectedDistrict);
-            return selectedDistrictData ? selectedDistrictData.wards : [];
+            const selectedDistrictData = selectedTownDistricts()?.find((item) => item.name === selectedDistrict);
+            return selectedDistrictData ? selectedDistrictData.level3s : [];
         }
         return [];
     };
@@ -78,6 +70,17 @@ function VnAddress({ isClickSubmit, user_address = null, sendAddressData, sendIs
 
         sendIsValid(isChosenAddress());
     }, [selectedWard]);
+
+    const getVietNamAddress = async () => {
+        try {
+            // let address = await VietNamAddress.getVietNamAddress();
+            let address = dvhcvn;
+            // console.log(dvhcvn[0]);
+            setAddress(address);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         getVietNamAddress();
@@ -107,11 +110,12 @@ function VnAddress({ isClickSubmit, user_address = null, sendAddressData, sendIs
                 </select>
                 <select value={selectedDistrict} onChange={onDistrictChange}>
                     <option value="">Huyện</option>
-                    {selectedTownDistricts().map((item, index) => (
-                        <option key={'quan' + index} value={item.name}>
-                            {item.name}
-                        </option>
-                    ))}
+                    {selectedTownDistricts() &&
+                        selectedTownDistricts().map((item, index) => (
+                            <option key={'quan' + index} value={item.name}>
+                                {item.name}
+                            </option>
+                        ))}
                 </select>
                 <select value={selectedWard} onChange={onWardChange}>
                     <option value="">Xã</option>
