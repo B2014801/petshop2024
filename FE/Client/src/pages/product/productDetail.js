@@ -103,12 +103,12 @@ function ProductDetail() {
     };
 
     const handleAddToCart = async (number) => {
-        const data = {
-            UserId: user.user._id,
-            ProductId: id,
-            Amount: number.order_number,
-        };
         try {
+            const data = {
+                UserId: user.user._id,
+                ProductId: id,
+                Amount: number.order_number,
+            };
             const result = await productService.addToCart(id, data);
             if (result) {
                 setState((prev) => ({ ...prev, isShowAddToCartSuccess: true }));

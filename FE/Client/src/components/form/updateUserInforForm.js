@@ -18,6 +18,7 @@ import { logout } from '~/stores/auth.store';
 import Warning from '../notification/warning';
 import { areObjectsEqual } from '~/components/functions';
 import { useNavigate } from 'react-router-dom';
+import { setAmount } from '~/stores/cart.store';
 
 const cx = classNames.bind(style);
 function UpdateUserInforForm({ isShowImg = false, sendIsValid = () => {} }) {
@@ -308,6 +309,7 @@ function UpdateUserInforForm({ isShowImg = false, sendIsValid = () => {} }) {
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         dispatch(logout());
+                                                        dispatch(setAmount(0));
                                                         navigate('/login');
                                                     }}
                                                     className="btn btn-danger"

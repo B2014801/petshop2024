@@ -8,7 +8,7 @@ import { loadAuthState } from './stores/auth.store';
 import { UserHome } from './pages/user';
 
 function App() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = useSelector((store) => store.auth.user) ?? JSON.parse(localStorage.getItem('user'));
     return (
         <Router>
             <Routes>

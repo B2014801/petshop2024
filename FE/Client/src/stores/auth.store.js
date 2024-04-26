@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import AuthService from '~/services/auth.service';
+import { setAmount } from './cart.store';
 
 export const counterSlice = createSlice({
     name: 'auth',
@@ -14,8 +15,6 @@ export const counterSlice = createSlice({
         logout: (state) => {
             state.user = null;
             localStorage.removeItem('user');
-            // let CartStore = cartStore();
-            // CartStore.setAmount(0);
         },
         login: (state, userdata) => {
             state.user = userdata.payload;

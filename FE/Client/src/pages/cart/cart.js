@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,11 +9,12 @@ import style from './cart.module.scss';
 import cartService from '~/services/cart.service';
 import { getTemporaryPriceOfOneProduct, getTemporaryPrice } from '~/components/functions';
 import { Success } from '~/components/notification';
+import { minusAmount } from '~/stores/cart.store';
 
 const cx = classNames.bind(style);
 function Cart() {
     const navigate = useNavigate();
-
+    const dispath = useDispatch();
     const user = useSelector((store) => store.auth.user);
     const [state, setState] = useState({
         cart: [],
@@ -52,6 +53,7 @@ function Cart() {
                 }
             }
         })();
+        console.log(user);
     }, [navigate, user]);
 
     const updateCart = async () => {
@@ -91,6 +93,7 @@ function Cart() {
                 isShowUpdateCartSuccess: false,
                 cart: prev.cart.filter((_, index1) => index1 !== index),
             }));
+            dispath(minusAmount());
         }
     };
 

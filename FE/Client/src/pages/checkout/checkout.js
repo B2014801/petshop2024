@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import style from './checkout.module.scss';
-import { invoiceService, cartService, voucherService } from '~/services';
+import { invoiceService, cartService, voucherService, userSerVice } from '~/services';
 import { getTemporaryPriceOfOneProduct, getTemporaryPrice } from '~/components/functions';
 import { Modal1 } from '~/components/modals';
 import { Success } from '~/components/notification';
@@ -32,6 +32,51 @@ function CheckOut() {
     });
 
     useEffect(() => {
+        const getDeliveryPrice = async () => {
+            var shopDistrictID = null;
+            var userDistrictID = null;
+            const getDistrictId = async (id, districts) => {
+                let rs;
+                await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', {
+                    method: 'POST',
+                    headers: {
+                        token: process.env.REACT_APP_GHN_API_TOKEN,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        province_id: id,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((response) => {
+                        rs = response['data'].find((district) => district.DistrictName === districts).DistrictID;
+                    })
+                    .catch((e) => console.log(e));
+                return rs;
+            };
+            await fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                method: 'GET',
+                headers: {
+                    token: process.env.REACT_APP_GHN_API_TOKEN,
+                },
+            })
+                .then((response) => response.json())
+                .then(async (response) => {
+                    let shopProvinceID = response['data'].find(
+                        (province) => province.ProvinceName === 'Cần Thơ',
+                    )?.ProvinceID;
+                    let _user = await userSerVice.getUser(user.user._id);
+                    let userProvince = _user.address?.split(',')[2].trim().slice(5);
+                    let userDistrict = _user.address?.split(',')[1].trim();
+                    let userProvinceID = response['data'].find(
+                        (province) => province.ProvinceName === userProvince,
+                    )?.ProvinceID;
+                    shopDistrictID = await getDistrictId(shopProvinceID, 'Quận Bình Thủy');
+                    userDistrictID = await getDistrictId(userProvinceID, userDistrict);
+                    console.log(shopDistrictID, userDistrictID);
+                })
+                .catch((e) => console.log(e));
+        };
         if (user) {
             (async () => {
                 try {
@@ -44,8 +89,14 @@ function CheckOut() {
                             CheckOutData: checkoutData,
                             vouchers: voucherData,
                         }));
+                        getDeliveryPrice();
                     } else {
-                        setState((prev) => ({ ...prev, isShowCheckOut: false, CheckOutData: [] }));
+                        setState((prev) => ({
+                            ...prev,
+                            isShowCheckOut: false,
+                            CheckOutData: [],
+                            isShowEmptyCheckOut: true,
+                        }));
                     }
                 } catch (error) {
                     navigate('/login');
@@ -348,9 +399,11 @@ function CheckOut() {
                         </div>
                     </div>
                 </div>
-                <div v-if="isShowEmptyCheckOut">
-                    <h6 className="text-center mt-3">Chưa có sản phẩm thanh toán!!</h6>
-                </div>
+                {state.isShowEmptyCheckOut && (
+                    <div>
+                        <h6 className="text-center mt-3">Chưa có sản phẩm thanh toán!!</h6>
+                    </div>
+                )}
             </div>
             <Modal1 show={state.showVoucherModal} isClosed={() => closeModal()}>
                 <div className={cx('voucher-container')}>
