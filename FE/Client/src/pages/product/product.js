@@ -11,7 +11,6 @@ function Product() {
     const [products, setProducts] = useState([]);
     const [sortType, setSortType] = useState('new');
     const { id } = useParams();
-
     useEffect(() => {
         (async () => {
             try {

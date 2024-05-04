@@ -1,5 +1,5 @@
 <template>
-    <div class="news-list-container">
+    <div class="news-list-container mx-2">
         <h4 class="text-center mt-3">Tin tức</h4>
         <h4 v-if="news.length > 0" class="text-center mt-0">({{  news.length }})</h4>
         <div class="text-center">

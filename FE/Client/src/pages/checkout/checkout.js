@@ -427,7 +427,7 @@ function CheckOut() {
                             </div>
                             <div>
                                 <input
-                                    disabled={isExpiredDate(voucher.expired_date)}
+                                    disabled={isExpiredDate(voucher.expired_date) || voucher.status === 'disable'}
                                     type="checkbox"
                                     checked={state.selectedVoucher.includes(index)}
                                     id={'vourcher' + index}

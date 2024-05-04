@@ -101,7 +101,7 @@ function Cart() {
 
     const totalPrice = useMemo(() => {
         return getTemporaryPrice(state.cart);
-    }, [state.cart]);
+    }, [JSON.stringify(state.cart)]);
 
     const handleChangeAmount = (index, value) => {
         if (value > 0 && value <= parseInt(state.cart[index].ProductData.number)) {

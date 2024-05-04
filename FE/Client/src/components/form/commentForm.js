@@ -17,6 +17,7 @@ function CommentForm({ sendComment, sendNewComment }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         sendComment(comment);
+        setComment((prev) => ({ ...prev, content: '' }));
     };
     useEffect(() => {
         try {

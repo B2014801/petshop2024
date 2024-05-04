@@ -8,11 +8,11 @@ const cx = classNames.bind(style);
 
 function DividePage({ products, itemsPerPage = 8, sendPage = () => {} }) {
     const [currentPage, setCurrentPage] = useState(1);
-
     useEffect(() => {
         getPage();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage]);
+    }, [currentPage, JSON.stringify(products)]);
+
     const previousPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
