@@ -10,14 +10,14 @@ export const removeDiacriticsAndReplaceSpaces = (inputString) => {
 export const formatNumberWithDot = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ₫'; //1000 to 1.000
 };
-export const getProductAfterDisCount = (product) => {
+export const getProductAfterDisCount = (product, ints = null) => {
     const PriceInt = product.price.replace(/\./g, '');
-    const AfterDiscount = PriceInt - (PriceInt * product.discount) / 100;
-    return formatNumberWithDot(AfterDiscount);
+    const AfterDiscount = PriceInt - (PriceInt * parseInt(product.discount)) / 100;
+    return ints ? AfterDiscount : formatNumberWithDot(AfterDiscount);
 };
-export const getTemporaryPriceOfOneProduct = (price, amount) => {
-    const priceInt = price.replace(/\./g, ''); //1.000.000 to 1000000
-
+export const getTemporaryPriceOfOneProduct = (price, amount, discount) => {
+    let priceInt = price.replace(/\./g, ''); //1.000.000 to 1000000
+    priceInt -= (priceInt * parseInt(discount)) / 100;
     const priceFinal = formatNumberWithDot(priceInt * amount);
     return priceFinal;
 };
@@ -25,7 +25,7 @@ export const getTemporaryPriceOfOneProduct = (price, amount) => {
 export const getTemporaryPrice = (cart, vouchers = null) => {
     if (cart.length !== 0) {
         const temporary_price = cart.reduce(
-            (total, item) => total + item.Amount * item.ProductData.price.replace(/\./g, ''),
+            (total, item) => total + item.Amount * getProductAfterDisCount(item.ProductData, 1),
             0,
         );
 

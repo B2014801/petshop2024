@@ -259,7 +259,11 @@ function CheckOut() {
                                     </td>
                                     <td className="text-end">
                                         <b>
-                                            {getTemporaryPriceOfOneProduct(Product.ProductData.price, Product.Amount)}
+                                            {getTemporaryPriceOfOneProduct(
+                                                Product.ProductData.price,
+                                                Product.Amount,
+                                                Product.ProductData.discount,
+                                            )}
                                         </b>
                                     </td>
                                 </tr>

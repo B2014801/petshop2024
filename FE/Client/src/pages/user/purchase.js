@@ -56,7 +56,7 @@ function Purchase() {
             case 2:
                 return (
                     <p class="mb-0 text-success">
-                        <FontAwesomeIcon icon={faTruck} /> Đang giao hàng (dự kiến: ${date})
+                        <FontAwesomeIcon icon={faTruck} /> Đang giao hàng (dự kiến: {date})
                     </p>
                 );
             case 3:

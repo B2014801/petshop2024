@@ -7,7 +7,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import style from './cart.module.scss';
 import cartService from '~/services/cart.service';
-import { getTemporaryPriceOfOneProduct, getTemporaryPrice } from '~/components/functions';
+import { getTemporaryPriceOfOneProduct, getTemporaryPrice, getProductAfterDisCount } from '~/components/functions';
 import { Success } from '~/components/notification';
 import { minusAmount } from '~/stores/cart.store';
 
@@ -159,7 +159,7 @@ function Cart() {
                                             {product.ProductData.name} kho {product.ProductData.number}
                                         </td>
                                         <td>
-                                            <span>{product.ProductData.price} ₫</span>
+                                            <span>{getProductAfterDisCount(product.ProductData)}</span>
                                         </td>
                                         <td>
                                             {/* <form> */}
@@ -192,6 +192,7 @@ function Cart() {
                                                 {getTemporaryPriceOfOneProduct(
                                                     product.ProductData.price,
                                                     product.Amount,
+                                                    product.ProductData.discount,
                                                 )}
                                             </span>
                                         </td>
