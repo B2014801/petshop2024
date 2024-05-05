@@ -2,13 +2,13 @@
     <div class="news-add-container">
         <Form @submit="handleSubmit" :validation-schema="NewsFormValidate">
             <div class="mb-3">
-                <label for="">Tiêu đề</label>
-                <Field class="form-control w-50 " name="title" type="text" placeholder="Nhập tiêu đề" v-model="news.title"/>
+                <label for=""><b>Tiêu đề</b></label>
+                <Field class="form-control w-50 mt-3" name="title" type="text" placeholder="Nhập tiêu đề" v-model="news.title"/>
                 <ErrorMessage name="title" class="text-danger"/>
             </div>
             <div class="mb-3">
-                <label for="">Hình ảnh: &nbsp;&nbsp;</label>
-                <Field type="file"  name="img" v-model="news.img"/>
+                <label for=""><b>Hình ảnh</b> &nbsp;&nbsp;</label>
+                <Field type="file"   name="img" v-model="news.img"/>
                 <ErrorMessage name="img" class="text-danger"/>
             </div>
         
@@ -83,6 +83,9 @@ export default {
         }
     }
   },
+  created(){
+    document.title='News'
+  }
 
 }
 
